@@ -6,10 +6,12 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
+import frc.robot.roboMap;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -38,8 +40,12 @@ public class Robot extends TimedRobot {
   TalonSRX LiftLeft = new TalonSRX(12);
   TalonSRX LiftRight = new TalonSRX(11);
   VictorSPX intakeLeft = new VictorSPX(7);
+  BuiltInAccelerometer gyro = new BuiltInAccelerometer();
   VictorSPX intakeRight = new VictorSPX(8);
   solenoids sullie = new solenoids();
+  DigitalInput back = new DigitalInput(9);
+  DigitalInput front = new DigitalInput(8);
+
   AnalogInput blazeItDevice = new AnalogInput(3);
   UsbCamera vision;
   // there is a point with lift speed where its not enough to actually work below .3
@@ -47,7 +53,7 @@ public class Robot extends TimedRobot {
   //.36
   private Joystick m_Joystick;
   //the speed percent
-  double speedVar = .6;
+  double speedVar = .5;
   //.6
   double intakeSpeed = .4;
   // .4
@@ -59,9 +65,19 @@ public class Robot extends TimedRobot {
 
   }
 
+
+
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putBoolean("front", front.get());
+    SmartDashboard.putBoolean("back", back.get());
+  
+
     SmartDashboard.putNumber("blazeItDevice", blazeItDevice.getVoltage());
+    SmartDashboard.putNumber("gyroX", gyro.getX());
+    SmartDashboard.putNumber("gyroZ", gyro.getZ());
+    SmartDashboard.putNumber("gyroY", gyro.getY());
+
 
     double LeftSpeed = m_Joystick.getRawAxis(1);
     double Rightspeed = m_Joystick.getRawAxis(3);
@@ -89,7 +105,7 @@ public class Robot extends TimedRobot {
       MMLeft.set(ControlMode.PercentOutput, speedVar * -1);
       MMRight.set(ControlMode.PercentOutput, speedVar);
     }
-    if(m_Joystick.getRawButton(5)== true && m_Joystick.getRawButton(9)== false){
+    if(m_Joystick.getRawButton(5)== true && m_Joystick.getRawButton(9)== false && front.get() == true){
       LiftRight.set(ControlMode.PercentOutput, liftSpeed );
       LiftLeft.set(ControlMode.PercentOutput, liftSpeed * -1);
     }
