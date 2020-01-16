@@ -31,8 +31,7 @@ public class Robot extends TimedRobot {
    * the 1st lesser motor on the right RMRight = the 2nd lesser motor on the right
    * same applies for the left side
    */
-  VictorSPX MMRight = new VictorSPX(3);
-  VictorSPX MMLeft = new VictorSPX(6);
+  
 
   TalonSRX LiftLeft = new TalonSRX(12);
   TalonSRX LiftRight = new TalonSRX(11);
@@ -59,7 +58,7 @@ public class Robot extends TimedRobot {
     vision = CameraServer.getInstance().startAutomaticCapture(0); 
     m_Joystick = new Joystick(0);
     sullie.init();
-    mapped.follow();
+    mapped.init();
   }
 
 
@@ -80,27 +79,27 @@ public class Robot extends TimedRobot {
     double Rightspeed = m_Joystick.getRawAxis(3);
     double RightSpeed = Rightspeed * -1;
 
-    MMLeft.set(ControlMode.PercentOutput, LeftSpeed * speedVar);
-    MMRight.set(ControlMode.PercentOutput, RightSpeed * speedVar);
+    mapped.MMLeft.set(ControlMode.PercentOutput, LeftSpeed * speedVar);
+    mapped.MMRight.set(ControlMode.PercentOutput, RightSpeed * speedVar);
 
     
   
     
     if(m_Joystick.getRawButton(9)== true && m_Joystick.getRawButton(5)==true){
-      MMLeft.set(ControlMode.PercentOutput, speedVar);
-      MMRight.set(ControlMode.PercentOutput, speedVar);
+      mapped.MMLeft.set(ControlMode.PercentOutput, speedVar);
+      mapped.MMRight.set(ControlMode.PercentOutput, speedVar);
     }
     if(m_Joystick.getRawButton(9)== true && m_Joystick.getRawButton(6)==true){
-      MMLeft.set(ControlMode.PercentOutput, speedVar * -1);
-      MMRight.set(ControlMode.PercentOutput, speedVar * -1);
+      mapped.MMLeft.set(ControlMode.PercentOutput, speedVar * -1);
+      mapped.MMRight.set(ControlMode.PercentOutput, speedVar * -1);
     }
     if(m_Joystick.getRawButton(9)== true && m_Joystick.getRawButton(8)==true){
-      MMLeft.set(ControlMode.PercentOutput, speedVar);
-      MMRight.set(ControlMode.PercentOutput, speedVar * -1);
+      mapped.MMLeft.set(ControlMode.PercentOutput, speedVar);
+      mapped.MMRight.set(ControlMode.PercentOutput, speedVar * -1);
     }
     if(m_Joystick.getRawButton(9)== true && m_Joystick.getRawButton(7)==true){
-      MMLeft.set(ControlMode.PercentOutput, speedVar * -1);
-      MMRight.set(ControlMode.PercentOutput, speedVar);
+      mapped.MMLeft.set(ControlMode.PercentOutput, speedVar * -1);
+      mapped.MMRight.set(ControlMode.PercentOutput, speedVar);
     }
     if(m_Joystick.getRawButton(5)== true && m_Joystick.getRawButton(9)== false && front.get() == true){
       LiftRight.set(ControlMode.PercentOutput, liftSpeed );
