@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-import frc.robot.roboMap;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -20,7 +20,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.solenoids;
-
+import frc.robot.roboMap;
 /**
  * This is a demo program showing the use of the RobotDrive class, specifically
  * it contains the code necessary to operate a robot with tank drive.
@@ -32,11 +32,8 @@ public class Robot extends TimedRobot {
    * same applies for the left side
    */
   VictorSPX MMRight = new VictorSPX(3);
-  TalonSRX LMRight = new TalonSRX(2);
-  TalonSRX RMRight = new TalonSRX(1);
   VictorSPX MMLeft = new VictorSPX(6);
-  TalonSRX RMLeft = new TalonSRX(5);
-  TalonSRX LMLeft = new TalonSRX(4);
+
   TalonSRX LiftLeft = new TalonSRX(12);
   TalonSRX LiftRight = new TalonSRX(11);
   VictorSPX intakeLeft = new VictorSPX(7);
@@ -45,7 +42,7 @@ public class Robot extends TimedRobot {
   solenoids sullie = new solenoids();
   DigitalInput back = new DigitalInput(9);
   DigitalInput front = new DigitalInput(8);
-
+  roboMap mapped = new roboMap();
   AnalogInput blazeItDevice = new AnalogInput(3);
   UsbCamera vision;
   // there is a point with lift speed where its not enough to actually work below .3
@@ -62,7 +59,7 @@ public class Robot extends TimedRobot {
     vision = CameraServer.getInstance().startAutomaticCapture(0); 
     m_Joystick = new Joystick(0);
     sullie.init();
-
+    mapped.follow();
   }
 
 
@@ -82,13 +79,13 @@ public class Robot extends TimedRobot {
     double LeftSpeed = m_Joystick.getRawAxis(1);
     double Rightspeed = m_Joystick.getRawAxis(3);
     double RightSpeed = Rightspeed * -1;
-    
+
     MMLeft.set(ControlMode.PercentOutput, LeftSpeed * speedVar);
     MMRight.set(ControlMode.PercentOutput, RightSpeed * speedVar);
-    LMLeft.follow(MMLeft);
-    LMRight.follow(MMRight);
-    RMLeft.follow(MMLeft);
-    RMRight.follow(MMRight);
+
+    
+  
+    
     if(m_Joystick.getRawButton(9)== true && m_Joystick.getRawButton(5)==true){
       MMLeft.set(ControlMode.PercentOutput, speedVar);
       MMRight.set(ControlMode.PercentOutput, speedVar);
